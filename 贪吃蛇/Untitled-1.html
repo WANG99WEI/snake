@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #container div{
+        position: absolute;
+        left: 0px;
+        top:0px;
+        width: 50px;
+        height: 50px;
+        background: rgb(106, 221, 250);
+        opacity: 0.5px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 24px;
+        color: black;
+    }
+    #box {
+        position: absolute;
+        left: 500px;
+        top:300px;
+        width: 50px;
+        height: 50px;
+        background: yellow;
+        opacity: 0.5px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 24px;
+        color: black;
+    }
+    .off{
+        position: absolute;
+        left: 200px;
+        top:300px;
+        width: 50px;
+        height: 50px;
+        background: yellow;
+        opacity: 0.5px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 24px;
+        color: black;
+    }
+</style>
+<body>
+    
+    <div id="container">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+
+    </div>
+
+    <div>
+        <div id="box"></div>
+    </div>
+<script>
+    var oBox = document.getElementById("box");
+    var container = document.getElementById("container"),
+    oDiv = container.getElementsByTagName("div"),
+    width = oDiv[0].offsetWidth;
+    for(var i = oDiv.length-1;i>=0;i--){
+      oDiv[i].style.left = (oDiv.length-1-i)*50+"px";  
+    }
+    
+    document.onkeydown = function(e){
+
+        if(col(oDiv[0],oBox)){
+            oBox.style.background = "rgb(106, 221, 250)";
+            container.appendChild(oBox);
+            var box = document.createElement("div");
+            document.body.appendChild(box);
+            box.className="off";
+        }else{
+            oBox.style.background = "yellow";
+        }
+
+        for(var i=oDiv.length-1;i>0;i--){
+           oDiv[i].style.left = oDiv[i-1].offsetLeft+"px";
+           oDiv[i].style.top = oDiv[i-1].offsetTop+"px";
+        }
+     
+        var e = window.event || e;
+        switch(e.keyCode){
+            case 37:
+                oDiv[0].style.left = oDiv[0].offsetLeft-width+"px";
+                break;
+            case 38:   
+                oDiv[0].style.top = oDiv[0].offsetTop-width+"px"; 
+                break;
+            case 39: 
+                oDiv[0].style.left = oDiv[0].offsetLeft+width+"px";
+                break;
+            case 40:
+                oDiv[0].style.top = oDiv[0].offsetTop+width+"px";
+                break;  
+                     
+        }
+    }
+    function col(el1,el2){
+        //el1:蛇
+        //el2：食物
+        var r1 = el1.offsetLeft+el1.offsetWidth;
+        var l1 = el1.offsetLeft;
+        var b1 = el1.offsetTop+el1.offsetHeight;
+        var t1 = el1.offsetTop;
+        
+        var l2 = el2.offsetLeft;
+        var r2 = el2.offsetLeft+el2.offsetWidth;
+        var t2 = el2.offsetTop;
+        var b2 = el2.offsetTop+el2.offsetHeight;
+
+        if(r1 < l2 || l1 > r2 || b1 < t2 || t1 > b2){
+            return false;
+        }else {
+            return true;
+        }
+    }
+</script>
+</body>
+</html>
